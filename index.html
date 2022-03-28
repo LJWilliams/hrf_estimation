@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="css/herveish.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+	<link rel="stylesheet" href="plugin/chalkboard/style.css">
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			const size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section ><section data-markdown><script type="text/template">
+<!-- .slide: data-background-image="images/AdobeStock_477448716 [Converted].png" data-background-opacity="0.5" -->
+<div class="block"> <!-- .element: class="title-border" -->
+<h2>Estimating the Hemodynamic Response Function</h2>
+Lynne J Williams<br>
+March 28, 2022 
+</div></script></section><section data-markdown><script type="text/template">### Why estimate HRFs?
+- gives better estimation of activation/deactivation [Boch et al., 2021]
+  - remember BOLD is a proxy for neural activation/deactivation  
+- allows for inter-voxel variability<!-- .element: class="fragment" data-fragment-index="1" -->
+  - different HRF rise times for different brain regions/tasks/populations 
+    - children's HRFs rise faster than adults' 
+    - task differences in HRF rise times</script></section><section data-markdown><script type="text/template">### Two main methods
+<split even gap=2>
+<div class="block"> 
+<h4>Model-based</h4>
+Assume shape of HRF  (e.g., double gamma, Poisson, radial-basis, inverse logit, etc.) <span class="small-font"> 
+[Lei et al., 2012] </span><br>
+<img src="https://i.stack.imgur.com/4jAuf.png" ></img>
+<br>
+<div class="small-font" style="text-align: center;">Double Gamma distribution [<a href="https://i.stack.imgur.com/4jAuf.png">Stack Exchange</a>]</div></div>
+<div class="block"> 
+<h4>Model-free</h4>
+Estimate voxel-specific HRF and use the estimated HRF to deconvolve BOLD signal <span class="small-font"> [Lei et al., 2012; Wink et al., 2008; Zhang et al., 2012] </span><br>
+<img src="https://www.frontiersin.org/files/Articles/110699/fncom-09-00054-HTML/image_m/fncom-09-00054-g001.jpg">
+<!--<img src="./images/fncom-09-00054-g0001.jpeg">--><br>
+<div class="small-font" style="text-align: center;">Estimations of HRF in fMRI where black box is input [Rosa et al, 2015]</div>
+</div>
+</split></script></section><section data-markdown><script type="text/template">### The BOLD response is assumed to be linear time-invariant
+<div style="margin-top: 25%; text-align: center;">HRF can be represented as a linear combination of basis functions </div>
+<aside class="notes"><p>Here&#39;s the problem. We want a mathematical description of a curve or any other data distributed over space, time, and other types of continuum. Flexibility is a central issue since we usually cannot say in advance how complex the curve will be, or specify certain of its characteristics. We don&#39;t have the time or patience to search some handbook of known functions for one that looks like what we want to study, either. Moreover, however it is that we design our mathematical function, we will want to do any computation that is needed to fit the data quickly and with a minimum of programming.</p>
+</aside></script></section><section data-markdown><script type="text/template">### What are basis functions [Ramsay & Silverman, 1997]?
+A set of basic functional building blocks that can be stacked on top of one another to generate curves distributed over time or space (or other continuum).
+`$$f(t) = a_1\phi_{1}(t)+a_2\phi_{2}(t)+\ldots+a_k\phi_k(t)$$`
+This is a linear combination of building blocks, where `$\phi_k(t)$` is the `$k$`th function in our toolbox and `$a_k$` is a constant. `$\phi_k(t)$` is called a basis function.
+<aside class="notes"><p>We need, therefore, a set of basic functional building blocks that can be stacked on top of one another so as to have the features that we need. Mathematical Lego, in other words. Since this is mathematics, we use the symbol <code>$\phi_k(t)$</code> to stand for the <code>$k$</code>th function in our toy box, and we call this the <code>$k$</code>th <em>basis function</em>.<br>By &quot;stacking&quot; in mathematics we mean adding things, possibly after multiplying each of them by its own constant. So here is how we will construct a function <code>$f(t)$</code> using <code>$K$</code> of these blocks:<br><em>f(t)</em> = _a_1ø1(<em>t</em>) + _a_2ø2(<em>t</em>) + .... + _a_køk(<em>t</em>)<br>In math-speak, this is a &quot;linear combination&quot;. The construction of an actual function then becomes a matter of assigning values to the <code>$Κ$</code> constants <code>$a_k$</code>.</p>
+</aside></script></section><section data-markdown><script type="text/template">### Why basis functions?
+<div style="text-align: center;"><img src="https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/10/6238368/6210369/6210369-fig-1-source-large.gif" width=40%><!--<img src="images/Illustration-of-the-double-gamma-function-and-its-partial-derivatives.png" width=40%>--><br> Illustration of the double-gamma function and its partial derivatives. [Barré et al., 2012]</div>
+<div style="text-align: center;"><img src="https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/10/6238368/6210369/6210369-fig-4-source-large.gif" width=40%><!--<img src="images/Modeled-haemodynamic-response-block-paradigm-noisefree-black-FIR-blue-IIR.png" width="40%">--><br> Modeled haemodynamic response (block paradigm): noisefree (black), FIR (blue), IIR (Magenta), linear regression (green), FOP (red). [Barré et al., 2012]</div></script></section><section data-markdown><script type="text/template">### Now to model the HRF
+<div style="text-align: center;">Let's say we have an HRF that looks like this:<br><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-representation-b.png?w=2000&h"> <!--<img src="images/hrfestimation-fir-representation-b.jpg">--></div>
+<aside class="notes"><p>We would like to be able to model the HRF as a weighted combination of simple basis functions. The simplest set of basis functions is the FIR basis, which is a series of <img src="https://s0.wp.com/latex.php?latex=H&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="H"> distinct unit-magnitude (i.e. equal to one) impulses, each of which is delayed in time by <img src="https://s0.wp.com/latex.php?latex=t+%3D+1+%5Cdots+H&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="t = 1 \dots H"> TRs.</p>
+</aside></script></section><section data-markdown><script type="text/template">### Now to model the HRF
+<split left="1" right="4" gap=2>
+<div style="text-align: center;"><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-representation-b.png?w=2000&h"><!--<img src="images/hrfestimation-fir-representation-b.jpg">--></div>
+<div style="text-align: center;">Let's model that HRF using Finite Impulse Respose basis set:<br><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-representation-a.png?w=2000&h="><!--<img src="images/hrfestimation-fir-representation-a.jpg">--></div>
+</split>
+<aside class="notes"><p>Each of the basis functions <img src="https://s0.wp.com/latex.php?latex=b_t&bg=ffffff&fg=4e4e4e&s=0&c=20201002" alt="b_t"> has an unit impulse that occurs at time <img src="https://s0.wp.com/latex.php?latex=t+%3D+1+%5Cdots+20&bg=ffffff&fg=4e4e4e&s=0&c=20201002" alt="t = 1 \dots 20">; otherwise it is equal to zero. Weighting each basis function <img src="https://s0.wp.com/latex.php?latex=b_t&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="b_t"> with the corresponding value of the HRF at each time point <img src="https://s0.wp.com/latex.php?latex=t&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="t">, followed by a sum across all the functions gives the target HRF in the first plot above. The FIR basis model makes no assumptions about the shape of the  HRF–the weight applied to each basis function can take any value–which allows the model to capture a wide range of HRF profiles.
+Given an experiment where various stimuli are presented to a subject and BOLD responses evoked within the subject’s brain, the goal is to determine the HRF to each of the stimuli within each voxel. Let’s take a look at a concrete example of how we can use the FIR basis to simultaneously estimate HRFs to many stimuli for multiple voxels with distinct tuning properties.</p>
+</aside></script></section><section data-markdown><script type="text/template">### Now to model the HRF
+4 voxels:
+<div style="text-align: center;"><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-simulated-voxels1.png?w=2000&h="><!--<img src="images/hrfestimation-fir-simulated-voxels1.jpg">--></div>
+<aside class="notes"><p>For this example we revisit a simulation of voxels with 4 different types of tuning. One voxel is strongly tuned for visual stimuli (such as a light), the second voxel is weakly tuned for auditory stimuli (such as a tone), the third is moderately tuned for somatosensory stimuli (such as warmth applied to the palm), and the final voxel is unselective (i.e. weakly and equally selective for all three types of stimuli). We simulate an experiment where the blood-oxygen-level dependent (BOLD) signals evoked  in each voxel by a series of stimuli consisting of nonoverlapping lights, tones, and applications of warmth to the palm, are measured over <img src="https://s0.wp.com/latex.php?latex=T%3D330&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="T=330"> fMRI measurments (TRs).</p>
+</aside></script></section><section data-markdown><script type="text/template">### Now to model the HRF
+<div style="text-align: center;"><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-design-matrix.png?w=2000&h="><!--<img src="images/hrfestimation-fir-design-matrix.jpg">--></div>
+<aside class="notes"><p>Now let’s estimate the HRF of each voxel to each of the <img src="https://s0.wp.com/latex.php?latex=C+%3D+3&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="C = 3"> stimulus conditions using an FIR basis function model. To do so, we create a design matrix composed of successive sets of delayed impulses, where each set of impulses begins at the onset of each stimulus condition. For the <img src="https://s0.wp.com/latex.php?latex=%5BT+%5Ctimes+C%5D&bg=ffffff&fg=4e4e4e&s=0&c=20201002" alt="[T \times C]">-sized stimulus onset matrix <img src="https://s0.wp.com/latex.php?latex=D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="D">, we calculate an <img src="https://s0.wp.com/latex.php?latex=%5BT+%5Ctimes+HC%5D&bg=ffffff&fg=4e4e4e&s=0&c=20201002" alt="[T \times HC]"> FIR design matrix <img src="https://s0.wp.com/latex.php?latex=X_%7BFIR%7D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="X_{FIR}">, where <img src="https://s0.wp.com/latex.php?latex=H&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="H"> is the assumed length of the HRF we are trying to estimate. The code for creating and displaying the design matrix for an assumed HRF length <img src="https://s0.wp.com/latex.php?latex=H%3D16&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="H=16"> 
+In the right panel of the plot above, we see the  form of the FIR design matrix <img src="https://s0.wp.com/latex.php?latex=X_%7BFIR%7D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="X_{FIR}"> for the stimulus onset on the left. For each voxel, we want to determine the weight on each column of <img src="https://s0.wp.com/latex.php?latex=X_%7BFIR%7D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="X_{FIR}"> that will best explain the BOLD signals <img src="https://s0.wp.com/latex.php?latex=y&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="y"> measured from each voxel. We can form this problem in terms of a General Linear Model:</p>
+<p style="line-height: 0" class="reset-paragraph"><img src="https://s0.wp.com/latex.php?latex=y+%3D+X_%7BFIR%7D%5Cbeta_%7BFIR%7D&bg=ffffff&fg=4e4e4e&s=0&c=20201002" alt="y = X_{FIR}\beta_{FIR}" ></img></p>
+Where ![\beta_{FIR}](https://s0.wp.com/latex.php?latex=%5Cbeta_%7BFIR%7D&bg=ffffff&fg=4e4e4e&s=0&c=20201002) are the weights on each column of the FIR design matrix. If we set the values of ![\beta_{HRF}](https://s0.wp.com/latex.php?latex=%5Cbeta_%7BHRF%7D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) such as to minimize the sum of the squared errors (SSE) between the model above and the measured actual responses
+<p style="line-height: 0" class="reset-paragraph"><img src="https://s0.wp.com/latex.php?latex=SSE+%3D+%5Csum_i%5EN%28y%5E%7B%28i%29%7D+-+X_%7BFIR%7D%5E%7B%28i%29%7D%29%5E2&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="SSE = \sum_i^N(y^{(i)} - X_{FIR}^{(i)})^2" ></img></p>
+then we can use the Ordinary Least Squares (OLS)  to solve the for ![\beta_{HRF}](https://s0.wp.com/latex.php?latex=%5Cbeta_%7BHRF%7D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002).  Specifically, we solve for the weights as:
+<p style="line-height: 0" class="reset-paragraph"><img src="https://s0.wp.com/latex.php?latex=%5Chat+%5Cbeta_%7BFIR%7D+%3D+%28X_%7BFIR%7D%5ET+X_%7BFIR%7D%29%5E%7B-1%7D+X_%7BFIR%7D+y&bg=ffffff&fg=4e4e4e&s=0&c=20201002" alt="\hat \beta_{FIR} = (X_{FIR}^T X_{FIR})^{-1} X_{FIR} y" ></img></p></aside></script></section><section data-markdown><script type="text/template">### Now to model the HRF
+<div style="text-align: center;"><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-hrf-estimates.png?w=2000&h="><!--<img src="images/hrfestimation-fir-hrf-estimates.jpg">--></div>
+<aside class="notes"><p>Once determined, the resulting <img src="https://s0.wp.com/latex.php?latex=%5BCH+%5Ctimes+V%5D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="[CH \times V]"> matrix of weights <img src="https://s0.wp.com/latex.php?latex=%5Chat+%5Cbeta_%7BFIR%7D&bg=ffffff&fg=4e4e4e&s=0&c=20201002" alt="\hat \beta_{FIR}"> has the HRF of each of the <img src="https://s0.wp.com/latex.php?latex=V%3D4&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="V=4"> different voxels to each stimulus condition along its columns. The first <img src="https://s0.wp.com/latex.php?latex=H&bg=ffffff&fg=4e4e4e&s=-2&c=20201002" alt="H"> (1-16) of the weights along a column define the HRF to the first stimulus (the light). The second <img src="https://s0.wp.com/latex.php?latex=H&bg=ffffff&fg=4e4e4e&s=-1&c=20201002" alt="H"> (17-32) weights along a column determine the HRF to the second stimulus (the tone), etc… Below we parse out these weights and display the resulting HRFs for each voxel
+Here we see that estimated HRFs accurately capture both the shape of the HRF and the selectivity of each of the voxels. For instance, the HRFs estimated from the responses of first voxel indicate strong tuning for the light stimulus. The HRF estimated for the light stimulus has an amplitude that is approximately 4 times that of the true HRF. This corresponds with the actual tuning of the voxel (compare this to the value of <img src="https://s0.wp.com/latex.php?latex=%5Cbeta%281%2C1%29&bg=ffffff&fg=4e4e4e&s=0&c=20201002" alt="\beta(1,1)">). Additionally, time delay till the maximum value (time-to-peak) of the HRF to the light is the same as the true HRF. The first voxel’s HRFs estimated for the other stimuli are essentially noise around baseline. This (correctly) indicates that the first voxel has no selectivity for those stimuli. Further inspection of the remaining estimated HRFs indicate accurate tuning and HRF shape is recovered for the other three voxels as well.</p>
+</aside></script></section><section data-markdown><script type="text/template"><h3 style="margin-top: 25%;">PROS and CONS</h3></script></section><section data-markdown><script type="text/template">### Tools
+- rsHRF [Wu et al., 2021]
+- FLOBS (FIMRIB Linear Optimal Basis Sets) [Woolrich et al., 2004]
+- SPM Optimal Basis Sets [Ashburner et al., 2021]
+- hrf_estimation [Pedregosa & Eickenberg, 2015]</script></section><section data-markdown><script type="text/template">### Further Reading
+<div class="footnotes" role="doc-endnotes">
+<ol>
+<li id="fn:Ashburner" role="doc-endnote"><p>John Ashburner, Gareth Barnes, Chun-Chuan Chen, Jean Daunizeau, Guillaume Flandin, Karl Friston, Darren Gitelman, Volkmar Glauche, Rik Henson, Chloe Hutton, Amirhossein Jafarian, Stefan Kiebel, James Kilner, Vladimir Litvak, Jérémie Mattout, Rosalyn Moran, Will Penny, Christophe Phillips, Adeel Razi, Klaas Stephan, Sungho Tak, Ashley Tyrer, & Peter Zeidman (2021). _SPM 12 Manual_. London, UK: Functional Imaging Laboratory, Wellcome Centre for Human Neuroimaging. Retrieved from SPM12 Manual - Wellcome Centre for Human Neuroimaging.&nbsp;</p></li><li id="fn:Barbé" role="doc-endnote"><p>Barbé, K., Moer, W. V., & Nagels, G. (2012). [Fractional-Order Time Series Models for Extracting the Haemodynamic Response From Functional Magnetic Resonance Imaging Data](https://doi.org/10.1109/tbme.2012.2202117). _IEEE Transactions on Biomedical Engineering_, _59_(8), 2264–2272. doi:10.1109/tbme.2012.2202117&nbsp;</p></li><li id="fn:Lei" role="doc-endnote"><p>Lei, Y., Tong, L., & Yan, B. (2013). [A Mixed L2 Norm Regularized HRF Estimation Method for Rapid Event-Related fMRI Experiments](https://doi.org/10.1155/2013/643129). _Computational and Mathematical Methods in Medicine_, _2013_, 643129. doi:10.1155/2013/643129&nbsp;</p></li><li id="fn:Boch" role="doc-endnote"><p>Boch, M., Karl, S., Sladky, R., Huber, L., Lamm, C., & Wagner, I. C. (2021). Tailored haemodynamic response function increases detection power of fMRI in awake dogs (Canis familiaris). _NeuroImage_, _224_, 117414. doi:10.1016/j.neuroimage.2020.117414&nbsp;</p></li><li id="fn:Pedregosa" role="doc-endnote"><p>Pedregosa, F. & Eickenberg, M. (2015). [hrf_estimation Python module](https://pypi.org/project/hrf_estimation/). Pypi.&nbsp;</p></li><li id="fn:Ramsay" role="doc-endnote"><p>Ramsay, JO,  & Silverman, BW (1997). [Functional Data Analysis,](http://www.springer-ny.com/detail.tpl?cart=10656288402782197&ISBN=0387949569) New York: Springer.&nbsp;</p></li><li id="fn:Rangaprakash" role="doc-endnote"><p>Rangaprakash, D., Wu, G., Marinazzo, D., Hu, X., & Deshpande, G. (2018). [Hemodynamic response function (HRF) variability confounds resting‐state fMRI functional connectivity](https://doi.org/10.1002/mrm.27146). _Magnetic Resonance in Medicine_, _80_(4), 1697–1713. doi:10.1002/mrm.27146&nbsp;</p></li><li id="fn:Rosa" role="doc-endnote"><p>Rosa, P. N., Figueiredo, P., & Silvestre, C. J. (2015). [On the distinguishability of HRF models in fMRI](https://doi.org/10.3389/fncom.2015.00054) _Frontiers in Computational Neuroscience_, _9_, 54. doi:10.3389/fncom.2015.00054&nbsp;</p></li><li id="fn:Stansbury" role="doc-endnote"><p>Stansbury, D. (2012). [fMRI in Neuroscience: Modeling the HRF With FIR Basis Functions](https://theclevermachine.wordpress.com/2012/12/16/fmri-in-neuroscience-modeling-the-hrf-with-fir-basis-functions/). Website retrieved 2022-03-26.&nbsp;</p></li><li id="fn:Lex" role="doc-endnote"><p>Transnational College of Lex. (2012). [Who Is Fourier?: A Mathematical Adventure](https://www.amazon.ca/Fourier-Mathematical-Adventure-Transnational-College/dp/0964350408). Language Research Foundation.&nbsp;</p></li><li id="fn:Turner" role="doc-endnote"><p>Turner, M. P. (2020). _Bolder than Bold: Changes in Neurophysiologic Underpinnings of fMRI Signal with Age and Task Demand_. Dissertation. University of Texas at Dallas.&nbsp;</p></li><li id="fn:Wink" role="doc-endnote"><p>Wink, AM,  Hoogduin, H, &  Roerdink, JBTM (2008). [Data-driven haemodynamic response function extraction using Fourier-wavelet regularised deconvolution](https://doi.org/10.1186/1471-2342-8-7). _BMC Medical Imaging, 8,_ 7. doi:10.1186/1471-2342-8-7&nbsp;</p></li><li id="fn:Woolrich" role="doc-endnote"><p>Woolrich, M. W., Behrens, T. E. J., & Smith, S. M. (2004). Constrained linear basis sets for HRF modelling using Variational Bayes. _NeuroImage, 21:4_, 1748-1761.&nbsp;</p></li><li id="fn:Wu" role="doc-endnote"><p>Wu, G.-R., Colenbier, N., Bossche, S. V. D., Clauw, K., Johri, A., Tandon, M., & Marinazzo, D. (2021). rsHRF: A toolbox for resting-state HRF estimation and deconvolution. _NeuroImage_, _244_, 118591. doi:10.1016/j.neuroimage.2021.118591&nbsp;</p></li><li id="fn:Zhang" role="doc-endnote"><p>Zhang, T, Li, F, Beckes, L, Brown, C, Coan, JA (2012). [Nonparametric inference of the hemodynamic response using multi-subject fMRI data](https://doi.org/10.1016/j.neuroimage.2012.08.014). _NeuroImage, 63, 3_, 1754-1765. doi:10.1016/j.neuroimage.2012.08.014&nbsp;</p></li></ol>
+</div>
+</script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/menu/menu.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+	<script src="plugin/chalkboard/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealCustomControls,
+		  RevealMenu,
+		  RevealChalkboard, 
+        ],
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+
+		customcontrols: {
+			controls: [
+				{id: 'toggle-overview',
+				title: 'Toggle overview (O)',
+				icon: '<i class="fa fa-th"></i>',
+				action: 'Reveal.toggleOverview();'
+				},
+				{ icon: '<i class="fa fa-pen-square"></i>',
+				title: 'Toggle chalkboard (B)',
+				action: 'RevealChalkboard.toggleChalkboard();'
+				},
+				{ icon: '<i class="fa fa-pen"></i>',
+				title: 'Toggle notes canvas (C)',
+				action: 'RevealChalkboard.toggleNotesCanvas();'
+				},
+			]
+		},
+		menu: {
+			loadIcons: false
+		}
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":true,"progress":true,"slideNumber":false,"center":false,"touch":true,"transition":"fade","transitionSpeed":"normal"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
