@@ -2,7 +2,7 @@
 
 This is a copy of a presentation on estimating the hemodynamic response function for the fMRI Working Group.
 
-The slides `hrf_estimation.md` were created in [Obsidian](https://obsidian.md/) using the Advanced Slides community plugin and the custom stylesheet `herveish.css`.
+The slides `hrf_estimation.md` were created in [Obsidian](https://obsidian.md/) using the `Advanced Slides` community plugin and the custom stylesheet `herveish.css`.
 
 To view the slides, 
 
