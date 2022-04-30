@@ -8,7 +8,7 @@ touch: true
 
 ---
 
-<!-- .slide: data-background-image="images/AdobeStock_477448716 [Converted].png" data-background-opacity="0.5" -->
+<!-- slide bg="[[AdobeStock_477448716 [Converted].png]]" data-background-opacity="0.5"-->
 
 ::: block <!-- element class="title-border" -->
 <h2>Estimating the Hemodynamic Response Function</h2>
