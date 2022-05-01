@@ -108,11 +108,15 @@ note: We would like to be able to model the HRF as a weighted combination of sim
 --
 
 ### Now to model the HRF
+<!-- slide align="center"-->
 
 <split left="1" right="4" gap=2>
-<div style="text-align: center;"><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-representation-b.png?w=2000&h"><!--<img src="images/hrfestimation-fir-representation-b.jpg">--></div>
+![[hrfestimation-fir-representation-b.jpg]]
 
-<div style="text-align: center;">Let's model that HRF using Finite Impulse Respose basis set:<br><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-representation-a.png?w=2000&h="><!--<img src="images/hrfestimation-fir-representation-a.jpg">--></div>
+::: block
+Let's model that HRF using Finite Impulse Respose basis set:
+![[hrfestimation-fir-representation-a.jpg]]
+:::
 </split>
 
 note: Each of the basis functions ![b_t](https://s0.wp.com/latex.php?latex=b_t&bg=ffffff&fg=4e4e4e&s=0&c=20201002) has an unit impulse that occurs at time ![t = 1 \dots 20](https://s0.wp.com/latex.php?latex=t+%3D+1+%5Cdots+20&bg=ffffff&fg=4e4e4e&s=0&c=20201002); otherwise it is equal to zero. Weighting each basis function ![b_t](https://s0.wp.com/latex.php?latex=b_t&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) with the corresponding value of the HRF at each time point ![t](https://s0.wp.com/latex.php?latex=t&bg=ffffff&fg=4e4e4e&s=-1&c=20201002), followed by a sum across all the functions gives the target HRF in the first plot above. The FIR basis model makes no assumptions about the shape of the  HRF–the weight applied to each basis function can take any value–which allows the model to capture a wide range of HRF profiles.
