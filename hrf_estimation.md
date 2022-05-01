@@ -98,7 +98,10 @@ Modeled haemodynamic response (block paradigm): noisefree (black), FIR (blue), I
 
 ### Now to model the HRF
 
-<div style="text-align: center;">Let's say we have an HRF that looks like this:<br><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-representation-b.png?w=2000&h"> <!--<img src="images/hrfestimation-fir-representation-b.jpg">--></div>
+<!-- slide align="center"-->
+
+Let's say we have an HRF that looks like this:
+![[hrfestimation-fir-representation-b.jpg]]
 
 note: We would like to be able to model the HRF as a weighted combination of simple basis functions. The simplest set of basis functions is the FIR basis, which is a series of ![H](https://s0.wp.com/latex.php?latex=H&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) distinct unit-magnitude (i.e. equal to one) impulses, each of which is delayed in time by ![t = 1 \dots H](https://s0.wp.com/latex.php?latex=t+%3D+1+%5Cdots+H&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) TRs.
 
