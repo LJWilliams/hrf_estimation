@@ -33,21 +33,27 @@ March 28, 2022
 
 <split even gap=2>
 ::: block 
-<h4>Model-based</h4>
-Assume shape of HRF  (e.g., double gamma, Poisson, radial-basis, inverse logit, etc.) <span class="small-font"> 
-[Lei et al., 2012] </span><br>
-<img src="https://i.stack.imgur.com/4jAuf.png">
-<br>
-<div class="small-font" style="text-align: center;">Double Gamma distribution [<a href="https://i.stack.imgur.com/4jAuf.png">Stack Exchange</a>]</div>:::
+#### Model-based
+
+Assume shape of HRF  (e.g., double gamma, Poisson, radial-basis, inverse logit, etc.) <span style="font-size:small"> 
+[Lei et al., 2012] </span>
+
+![Image](https://i.stack.imgur.com/4jAuf.png)
+
+Double Gamma distribution <!-- element align="center" style="font-size:smaller; margin:0"--> [[Stack Exchange](https://i.stack.imgur.com/4jAuf.png)]
+
+:::
 
 ::: block 
-<h4>Model-free</h4>
-Estimate voxel-specific HRF and use the estimated HRF to deconvolve BOLD signal <span class="small-font"> [Lei et al., 2012; Wink et al., 2008; Zhang et al., 2012] </span><br>
-<img src="https://www.frontiersin.org/files/Articles/110699/fncom-09-00054-HTML/image_m/fncom-09-00054-g001.jpg">
-<!--<img src="./images/fncom-09-00054-g0001.jpeg">--><br>
-<div class="small-font" style="text-align: center;">Estimations of HRF in fMRI where black box is input [Rosa et al, 2015]</div>
+#### Model-free
+
+Estimate voxel-specific HRF and use the estimated HRF to deconvolve BOLD signal <span style="font-size:small"> [Lei et al., 2012; Wink et al., 2008; Zhang et al., 2012] </span>
+
+![[fncom-09-00054-g0001.jpeg]]
+Estimations of HRF in fMRI where black box is input<!-- element align="center" style="font-size:smaller; margin:0"--> [Rosa et al, 2015] 
 :::
 </split>
+
 
 --
 
