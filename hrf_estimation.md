@@ -82,10 +82,17 @@ In math-speak, this is a "linear combination". The construction of an actual fun
 
 ### Why basis functions?
 
-<div style="text-align: center;"><img src="https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/10/6238368/6210369/6210369-fig-1-source-large.gif" width=40%><!--<img src="images/Illustration-of-the-double-gamma-function-and-its-partial-derivatives.png" width=40%>--><br> Illustration of the double-gamma function and its partial derivatives. [Barré et al., 2012]</div>
+::: block
 
-<div style="text-align: center;"><img src="https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/10/6238368/6210369/6210369-fig-4-source-large.gif" width=40%><!--<img src="images/Modeled-haemodynamic-response-block-paradigm-noisefree-black-FIR-blue-IIR.png" width="40%">--><br> Modeled haemodynamic response (block paradigm): noisefree (black), FIR (blue), IIR (Magenta), linear regression (green), FOP (red). [Barré et al., 2012]</div>
+![[Illustration-of-the-double-gamma-function-and-its-partial-derivatives.png|380]] 
 
+Illustration of the double-gamma function and its partial derivatives. <span style="font-size:small">[Barré et al., 2012]</span>
+
+![[Modeled-haemodynamic-response-block-paradigm-noisefree-black-FIR-blue-IIR.png|380]] 
+
+Modeled haemodynamic response (block paradigm): noisefree (black), FIR (blue), IIR (Magenta), linear regression (green), FOP (red). <span style="font-size:small">[Barré et al., 2012]</span>
+
+::: <!-- element align="center"-->
 
 --
 
