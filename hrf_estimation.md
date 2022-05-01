@@ -156,7 +156,8 @@ then we can use the Ordinary Least Squares (OLS)  to solve the for ![\beta_{HRF}
 --
 
 ### Now to model the HRF
-<div style="text-align: center;"><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-hrf-estimates.png?w=2000&h="><!--<img src="images/hrfestimation-fir-hrf-estimates.jpg">--></div>
+<!-- slide align="center"-->
+![[hrfestimation-fir-hrf-estimates.webp]]
 
 note: Once determined, the resulting ![[CH \times V]](https://s0.wp.com/latex.php?latex=%5BCH+%5Ctimes+V%5D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) matrix of weights ![\hat \beta_{FIR}](https://s0.wp.com/latex.php?latex=%5Chat+%5Cbeta_%7BFIR%7D&bg=ffffff&fg=4e4e4e&s=0&c=20201002) has the HRF of each of the ![V=4](https://s0.wp.com/latex.php?latex=V%3D4&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) different voxels to each stimulus condition along its columns. The first ![H](https://s0.wp.com/latex.php?latex=H&bg=ffffff&fg=4e4e4e&s=-2&c=20201002) (1-16) of the weights along a column define the HRF to the first stimulus (the light). The second ![H](https://s0.wp.com/latex.php?latex=H&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) (17-32) weights along a column determine the HRF to the second stimulus (the tone), etc… Below we parse out these weights and display the resulting HRFs for each voxel
 
