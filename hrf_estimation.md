@@ -20,8 +20,8 @@ March 28, 2022
 
 ### Why estimate HRFs?
 
-- gives better estimation of activation/deactivation [Boch et al., 2021]
-  - remember BOLD is a proxy for neural activation/deactivation  
+- gives better estimation of activation/deactivation <span style="font-size:small">[Boch et al., 2021]</span>
+  - remember BOLD is a proxy for neural activation/deactivation
 + allows for inter-voxel variability
   - different HRF rise times for different brain regions/tasks/populations 
     - children's HRFs rise faster than adults' 
