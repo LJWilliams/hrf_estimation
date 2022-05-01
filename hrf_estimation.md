@@ -58,7 +58,7 @@ Estimations of HRF in fMRI where black box is input<!-- element align="center" s
 --
 
 ### The BOLD response is assumed to be linear time-invariant
-<div style="margin-top: 25%; text-align: center;">HRF can be represented as a linear combination of basis functions </div>
+HRF can be represented as a linear combination of basis functions <!-- element align="center" drag="100 10" drop="0 25"-->
 
 note: Here's the problem. We want a mathematical description of a curve or any other data distributed over space, time, and other types of continuum. Flexibility is a central issue since we usually cannot say in advance how complex the curve will be, or specify certain of its characteristics. We don't have the time or patience to search some handbook of known functions for one that looks like what we want to study, either. Moreover, however it is that we design our mathematical function, we will want to do any computation that is needed to fit the data quickly and with a minimum of programming.  
 
