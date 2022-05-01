@@ -136,7 +136,8 @@ note: For this example we revisit a simulation of voxels with 4 different types 
 
 ### Now to model the HRF
 
-<div style="text-align: center;"><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-design-matrix.png?w=2000&h="><!--<img src="images/hrfestimation-fir-design-matrix.jpg">--></div>
+<!-- slide align="center"-->
+![[hrfestimation-fir-design-matrix.jpg]]
 
 note: Now let’s estimate the HRF of each voxel to each of the ![C = 3](https://s0.wp.com/latex.php?latex=C+%3D+3&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) stimulus conditions using an FIR basis function model. To do so, we create a design matrix composed of successive sets of delayed impulses, where each set of impulses begins at the onset of each stimulus condition. For the ![[T \times C]](https://s0.wp.com/latex.php?latex=%5BT+%5Ctimes+C%5D&bg=ffffff&fg=4e4e4e&s=0&c=20201002)-sized stimulus onset matrix ![D](https://s0.wp.com/latex.php?latex=D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002), we calculate an ![[T \times HC]](https://s0.wp.com/latex.php?latex=%5BT+%5Ctimes+HC%5D&bg=ffffff&fg=4e4e4e&s=0&c=20201002) FIR design matrix ![X_{FIR}](https://s0.wp.com/latex.php?latex=X_%7BFIR%7D&bg=ffffff&fg=4e4e4e&s=-1&c=20201002), where ![H](https://s0.wp.com/latex.php?latex=H&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) is the assumed length of the HRF we are trying to estimate. The code for creating and displaying the design matrix for an assumed HRF length ![H=16](https://s0.wp.com/latex.php?latex=H%3D16&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) 
 
