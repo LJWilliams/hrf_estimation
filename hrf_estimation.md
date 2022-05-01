@@ -67,7 +67,7 @@ note: Here's the problem. We want a mathematical description of a curve or any o
 ### What are basis functions ? <span style="font-size:small">[Ramsay & Silverman, 1997]</span>
 
 A set of basic functional building blocks that can be stacked on top of one another to generate curves distributed over time or space (or other continuum).
-$$f(t) = a_1\phi_{1}(t)+a_2\phi_{2}(t)+\ldots+a_k\phi_k(t)$$
+$f(t) = a_1\phi_{1}(t)+a_2\phi_{2}(t)+\ldots+a_k\phi_k(t)$
 This is a linear combination of building blocks, where $\phi_k(t)$ is the $k$th function in our toolbox and $a_k$ is a constant. $\phi_k(t)$ is called a basis function.
 
 note: We need, therefore, a set of basic functional building blocks that can be stacked on top of one another so as to have the features that we need. Mathematical Lego, in other words. Since this is mathematics, we use the symbol $\phi_k(t)$ to stand for the $k$th function in our toy box, and we call this the $k$th _basis function_.  
