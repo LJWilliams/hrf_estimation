@@ -128,7 +128,7 @@ Given an experiment where various stimuli are presented to a subject and BOLD re
 ### Now to model the HRF
 
 4 voxels:
-<div style="text-align: center;"><img src="https://theclevermachine.files.wordpress.com/2012/12/hrfestimation-fir-simulated-voxels1.png?w=2000&h="><!--<img src="images/hrfestimation-fir-simulated-voxels1.jpg">--></div>
+![[hrfestimation-fir-simulated-voxels1.jpg]]
 
 note: For this example we revisit a simulation of voxels with 4 different types of tuning. One voxel is strongly tuned for visual stimuli (such as a light), the second voxel is weakly tuned for auditory stimuli (such as a tone), the third is moderately tuned for somatosensory stimuli (such as warmth applied to the palm), and the final voxel is unselective (i.e. weakly and equally selective for all three types of stimuli). We simulate an experiment where the blood-oxygen-level dependent (BOLD) signals evoked  in each voxel by a series of stimuli consisting of nonoverlapping lights, tones, and applications of warmth to the palm, are measured over ![T=330](https://s0.wp.com/latex.php?latex=T%3D330&bg=ffffff&fg=4e4e4e&s=-1&c=20201002) fMRI measurments (TRs).
 
