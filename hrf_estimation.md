@@ -64,7 +64,7 @@ note: Here's the problem. We want a mathematical description of a curve or any o
 
 --
 
-### What are basis functions [Ramsay & Silverman, 1997]?
+### What are basis functions ? <span style="font-size:small">[Ramsay & Silverman, 1997]</span>
 
 A set of basic functional building blocks that can be stacked on top of one another to generate curves distributed over time or space (or other continuum).
 $$f(t) = a_1\phi_{1}(t)+a_2\phi_{2}(t)+\ldots+a_k\phi_k(t)$$
