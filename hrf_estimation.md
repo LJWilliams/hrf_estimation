@@ -165,16 +165,16 @@ Here we see that estimated HRFs accurately capture both the shape of the HRF and
 
 --
 
-<h3 style="margin-top: 25%;">PROS and CONS</h3>
+### PROS and CONS <!-- element align="center" drag="100 10" drop="0 25"-->
 
 --
 
 ### Tools
 
-- rsHRF [Wu et al., 2021]
-- FLOBS (FIMRIB Linear Optimal Basis Sets) [Woolrich et al., 2004]
-- SPM Optimal Basis Sets [Ashburner et al., 2021]
-- hrf_estimation [Pedregosa & Eickenberg, 2015]
+- rsHRF <span style="font-size:small">[Wu et al., 2021]</span>
+- FLOBS (FIMRIB Linear Optimal Basis Sets) <span style="font-size:small">[Woolrich et al., 2004]</span>
+- SPM Optimal Basis Sets <span style="font-size:small">[Ashburner et al., 2021]</span>
+- hrf_estimation <span style="font-size:small">[Pedregosa & Eickenberg, 2015]</span>
 
 --
 
